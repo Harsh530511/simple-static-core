@@ -1,47 +1,54 @@
 
-# The Cockroach Janta Party — Brutalist Clone
+# Plan — Complete the CJP-Style Brutalist Site
 
-Replace the existing DriveEasy project with a single-page brutalist editorial clone of thecockroachjantaparty.org.in.
+Approach: keep the existing brutalist design system (paper/ink/gold tokens, Space Grotesk + serif italic, sharp borders, marquees) and the pages already built (Home, Manifesto, Articles, Article detail, Join, Disclaimer, Contact). Audit and polish those, then add every missing page using **original satirical copy** in the same tone (no verbatim reproduction of the source site).
 
-## Design System
+## 1. Audit & polish existing UI
+- Verify routing in `src/App.tsx`; add all new routes + ensure `SiteHeader` and `SiteFooter` wrap every page.
+- Header: add full nav (Vision, Manifesto, Articles, Gallery, Members, Issues, Tracker, Contact), language chip, "Join the Party" + "Raise an Issue" buttons, mobile hamburger drawer.
+- Top marquee + bottom "live joining" member ticker present on every page (extracted into layout).
+- Footer: expand to 4 columns (The Party / Topics / Get Involved / Legal) with full link map, dispatch newsletter form, social row, "A work of satire" strip.
+- Tighten Hero, Manifesto, Faq, Eligibility spacing/typography; ensure all pages share the same `SectionLabel` rhythm.
 
-- **Colors**: `#F9F9F9` background, `#111111` text/borders, muted political red `#C8341E` accent.
-- **Typography**: Space Grotesk (display, 800/900) + Inter (body, 400/500). Tight tracking on large headings.
-- **Borders**: `1px solid #111` everywhere — sections, cards, inputs, buttons. No border-radius. No soft shadows.
-- **Spacing**: Aggressive padding inside bordered blocks. CSS Grid wireframe layout.
+## 2. New pages (all with original copy)
+Each page = `src/pages/<Name>.tsx` + SEO + brutalist layout.
 
-All tokens go into `src/index.css` (HSL) + `tailwind.config.ts`.
+- **Gallery** (`/gallery`) — 12 vintage-propaganda poster cards in a 3-col bordered grid, filter chips (Rally / Manifesto / Membership / Poster / Heritage / Symbol). Posters generated via imagegen (greyscale + muted red/gold), saved as Lovable assets.
+- **Members** (`/members`) — intro block + bordered grid of ~12 satirical member cards (initials avatar, name, city, why-they-joined, REQ id, join date), "Become #21564" CTA card.
+- **Voice / Issues** (`/voice`) — three-column layout (HOT / feed / TOP + NEW), category filter chips, sort tabs (Top/Hot/New), bordered issue cards with severity tag (1/10–10/10), upvote/downvote/share, location, author chip. Static seed of 12 fictional issues. Pagination stub.
+- **Raise Issue** (`/voice/raise`) — brutalist form: title, category, severity slider, location, description, anonymous toggle, submit (stores to localStorage, prepends to feed).
+- **Tracker** (`/cockroach-tracker`) — header stats (total members, on map, top state, latest join), India SVG heatmap (inline simplified SVG with state shading by seeded counts), live joins side panel, "Top cities" 4×3 bordered grid.
+- **Quotes** (`/quotes`) — 2-col bordered grid of ~7 satirical quote cards, intro line.
+- **Memes** (`/meme`) — masonry-ish bordered grid of meme cards (placeholder ASCII/typographic memes since we won't generate real ones), share/download buttons.
+- **News** (`/news`) — editorial list of press mentions (date · outlet · headline · excerpt · READ →) with original blurbs.
+- **Press** (`/press`) — press contact, downloadable assets block, boilerplate, founder bios placeholder, logos strip.
+- **Card** (`/card`) — membership card generator: name + city + REQ id input → renders printable brutalist member card preview with download-as-PNG (html2canvas).
+- **Privacy** (`/privacy`) — short + long version, original wording.
+- **Terms** (`/terms`) — original wording.
+- **Vision** (`/vision`) — pull existing Vision block into standalone page with extended manifesto-philosophy copy.
 
-## File Changes
+## 3. Shared components (new under `src/components/cjp/`)
+- `SiteLayout.tsx` — wraps TopMarquee + LiveMemberTicker + SiteHeader + `<Outlet/>` + SiteFooter.
+- `IssueCard.tsx`, `MemberCard.tsx`, `PosterCard.tsx`, `QuoteCard.tsx`, `NewsCard.tsx`, `MembershipCard.tsx`, `IndiaHeatmap.tsx`, `CategoryChips.tsx`.
 
-**Delete**: existing DriveEasy components (`HeroSection`, `CarCard`, `BookingModal`, `HowItWorks`, `Navbar`, `Footer`, `NavLink`), `src/data/cars.ts`, `src/App.css`.
+## 4. Data seeds (`src/data/`)
+- `issues.ts`, `members.ts`, `posters.ts`, `quotes.ts`, `news.ts`, `states.ts` — all fictional, satirical, original.
 
-**Create** under `src/components/cjp/`:
-- `Marquee.tsx` — pure CSS infinite scroll, reusable with `items` + `variant` (top / breaking).
-- `TopBar.tsx` — top marquee.
-- `Hero.tsx` — massive title, Hindi subtitle, nav row, two CTAs, live members side panel.
-- `Swarm.tsx` — full-width placeholder crowd image, "Voice of the Burnt-Out Youth", 4-stat block.
-- `BreakingTicker.tsx` — second marquee variant.
-- `Vision.tsx` — two-column Vision / Mission.
-- `Manifesto.tsx` — 5 demands in numbered bordered grid + explainer link.
-- `Faq.tsx` — accordion with +/− toggle, sharp borders.
-- `Journal.tsx` — 3 editorial article cards (date · read time · title · excerpt · READ →).
-- `Eligibility.tsx` — 4-item checklist + big JOIN CTA.
-- `Footer.tsx` — Dispatch newsletter form, contact columns, satire warning.
+## 5. Assets
+- Generate 12 vintage poster images via imagegen (greyscale + accent), upload via lovable-assets, reference in `posters.ts`.
 
-**Rewrite**:
-- `src/pages/Index.tsx` — compose the above in order.
-- `src/index.css` — new tokens, fonts, marquee keyframes.
-- `tailwind.config.ts` — font families, accent color, marquee animation.
-- `index.html` — title "The Cockroach Janta Party", matching meta description.
+## 6. SEO / sitemap
+- Update `scripts/generate-sitemap.ts` with new routes; per-page `<SEO>` titles + descriptions; JSON-LD on article + organization.
 
-## Technical Details
+## Technical notes
+- Stack stays React + Vite + Tailwind + react-router. No backend needed; "submit" actions persist to localStorage.
+- India heatmap: hand-rolled simplified SVG of states (not a real geo dataset) — fits brutalist aesthetic and avoids heavy map libs.
+- Membership card download: add `html-to-image` (lighter than html2canvas).
+- Strict tokens: `bg-paper`, `bg-ink`, `text-gold`, `font-display`, `font-condensed`, `font-italic-serif` — no raw hex in components.
 
-- Marquee: duplicate items twice in a flex row, animate `translateX(-50%)` linear infinite (~30s). No JS.
-- Responsive: grids collapse to single column on mobile; black borders preserved between stacked blocks.
-- Placeholder images: generate one greyscale crowd image via imagegen for the Swarm section; use CSS placeholders elsewhere.
-- Live Members panel: static seeded list (~12 satirical names with cities) styled as a vertical bordered ticker.
-- All copy verbatim from the prompt where given; satirical fillers used where missing.
-- Tailwind semantic tokens only — no raw hex in components.
+## Out of scope
+- Real auth / database / payments.
+- Verbatim copy from the reference site (using original satirical copy in the same register).
+- Real India geo map with district-level accuracy.
 
-Approve to proceed.
+Approve to proceed and I'll build it.

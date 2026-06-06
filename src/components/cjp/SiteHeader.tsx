@@ -4,10 +4,13 @@ import { Menu, X } from "lucide-react";
 import Marquee from "./Marquee";
 
 const NAV = [
-  { to: "/", label: "Home" },
+  { to: "/vision", label: "Vision" },
   { to: "/manifesto", label: "Manifesto" },
   { to: "/articles", label: "Articles" },
-  { to: "/join", label: "Members" },
+  { to: "/gallery", label: "Gallery" },
+  { to: "/members", label: "Members" },
+  { to: "/voice", label: "Issues" },
+  { to: "/cockroach-tracker", label: "Tracker" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -63,7 +66,7 @@ const SiteHeader = () => {
               JOIN THE PARTY →
             </Link>
             <Link
-              to="/contact"
+              to="/voice/raise"
               className="font-condensed text-xs sm:text-sm px-4 py-2.5 border border-ink hover:bg-ink hover:text-paper transition-colors"
             >
               RAISE AN ISSUE →
