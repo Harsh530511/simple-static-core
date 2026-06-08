@@ -7,7 +7,7 @@ import { config as loadEnv } from "dotenv";
 
 loadEnv();
 
-const BASE_URL = "https://thecockroachjantaparty.lovable.app";
+const BASE_URL = "https://simple-static-core.lovable.app";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
@@ -34,6 +34,7 @@ const staticEntries: Entry[] = [
   { path: "/privacy", changefreq: "yearly", priority: "0.3" },
   { path: "/terms", changefreq: "yearly", priority: "0.3" },
   { path: "/disclaimer", changefreq: "yearly", priority: "0.3" },
+  { path: "/sitemap", changefreq: "monthly", priority: "0.4" },
 ];
 
 async function fetchSlugs(table: string): Promise<{ slug: string; updated_at?: string }[]> {
