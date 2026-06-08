@@ -28,6 +28,7 @@ import Press from "./pages/Press";
 import CardPage from "./pages/CardPage";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Protests from "./pages/Protests";
@@ -74,6 +75,7 @@ const Shell = () => {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminLayout /></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
