@@ -1,19 +1,28 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import SEO from "@/components/cjp/SEO";
-import { getArticle } from "@/data/articles";
+import { supabase } from "@/integrations/supabase/client";
+
+interface A { id: string; slug: string; title: string; excerpt: string; date: string; read_time: string; body: string[] }
 
 const ArticleDetail = () => {
   const { slug = "" } = useParams();
-  const article = getArticle(slug);
+  const [article, setArticle] = useState<A | null>(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    supabase.from("articles").select("*").eq("slug", slug).eq("published", true).maybeSingle().then(({ data }) => {
+      setArticle(data as A | null); setLoading(false);
+    });
+  }, [slug]);
+
+  if (loading) return <div className="max-w-3xl mx-auto px-4 py-24 text-center font-condensed text-sm text-ink/60">Loading…</div>;
   if (!article) {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-8 py-24 text-center">
         <SEO title="Article not found" description="This essay does not exist." path={`/articles/${slug}`} />
         <h1 className="font-display text-5xl mb-6">Not in the archive.</h1>
-        <Link to="/articles" className="font-condensed text-sm border border-ink px-5 py-3 hover:bg-ink hover:text-paper">
-          ← Back to all articles
-        </Link>
+        <Link to="/articles" className="font-condensed text-sm border border-ink px-5 py-3 hover:bg-ink hover:text-paper">← Back to all articles</Link>
       </div>
     );
   }
@@ -36,16 +45,12 @@ const ArticleDetail = () => {
       />
       <article className="border-b border-ink">
         <div className="max-w-3xl mx-auto px-4 sm:px-8 py-16 sm:py-24">
-          <Link to="/articles" className="font-condensed text-xs text-ink/60 hover:text-gold">
-            ← THE JOURNAL
-          </Link>
+          <Link to="/articles" className="font-condensed text-xs text-ink/60 hover:text-gold">← THE JOURNAL</Link>
           <div className="flex items-center gap-4 font-condensed text-[11px] text-ink/60 mt-8 mb-5">
-            <span>{article.date}</span><span>·</span><span>{article.readTime}</span>
+            <span>{article.date}</span><span>·</span><span>{article.read_time}</span>
           </div>
           <h1 className="font-display text-4xl sm:text-6xl leading-[0.95] mb-8">{article.title}</h1>
-          <p className="font-italic-serif text-xl sm:text-2xl text-ink/75 leading-snug border-l-2 border-gold pl-5 mb-10">
-            {article.excerpt}
-          </p>
+          <p className="font-italic-serif text-xl sm:text-2xl text-ink/75 leading-snug border-l-2 border-gold pl-5 mb-10">{article.excerpt}</p>
           <div className="space-y-6 text-base sm:text-lg leading-relaxed text-ink/85">
             {article.body.map((p, i) => <p key={i}>{p}</p>)}
           </div>

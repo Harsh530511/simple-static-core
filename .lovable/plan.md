@@ -1,54 +1,66 @@
+# Plan: Admin CMS, Google Auth, Events Page, SEO Tags
 
-# Plan — Complete the CJP-Style Brutalist Site
+## 1. Enable Lovable Cloud
+Provisions Postgres + Auth + Storage. Required for Google sign-in, role-based admin, and CMS persistence.
 
-Approach: keep the existing brutalist design system (paper/ink/gold tokens, Space Grotesk + serif italic, sharp borders, marquees) and the pages already built (Home, Manifesto, Articles, Article detail, Join, Disclaimer, Contact). Audit and polish those, then add every missing page using **original satirical copy** in the same tone (no verbatim reproduction of the source site).
+## 2. Database schema (migration)
+Tables, all with RLS:
+- `profiles` (id → auth.users, full_name, avatar_url, email)
+- `user_roles` (user_id, role enum: `admin` | `user`) + `has_role()` security-definer fn
+- `articles` (slug, title, excerpt, body[], date, read_time, published)
+- `events` (slug, title, location, date, time_range, theme, body[], cover_image, published)
+- `quotes` (text, author, published)
+- `news` (title, source, url, published_at, summary, published)
+- `contact_messages` (name, email, message, created_at — public insert, admin read)
 
-## 1. Audit & polish existing UI
-- Verify routing in `src/App.tsx`; add all new routes + ensure `SiteHeader` and `SiteFooter` wrap every page.
-- Header: add full nav (Vision, Manifesto, Articles, Gallery, Members, Issues, Tracker, Contact), language chip, "Join the Party" + "Raise an Issue" buttons, mobile hamburger drawer.
-- Top marquee + bottom "live joining" member ticker present on every page (extracted into layout).
-- Footer: expand to 4 columns (The Party / Topics / Get Involved / Legal) with full link map, dispatch newsletter form, social row, "A work of satire" strip.
-- Tighten Hero, Manifesto, Faq, Eligibility spacing/typography; ensure all pages share the same `SectionLabel` rhythm.
+Trigger `handle_new_user`: on signup creates a profile row. **If the new user is the first user in the system**, also inserts an `admin` role into `user_roles`; otherwise `user`. This implements "first Google sign-in = admin".
 
-## 2. New pages (all with original copy)
-Each page = `src/pages/<Name>.tsx` + SEO + brutalist layout.
+RLS:
+- Public SELECT on `published = true` rows for articles/events/quotes/news
+- Admin (via `has_role(auth.uid(),'admin')`) gets full CRUD
+- `contact_messages`: anyone INSERT, admin SELECT
+- `profiles`: user reads/updates own, admin reads all
+- `user_roles`: user reads own, admin manages
 
-- **Gallery** (`/gallery`) — 12 vintage-propaganda poster cards in a 3-col bordered grid, filter chips (Rally / Manifesto / Membership / Poster / Heritage / Symbol). Posters generated via imagegen (greyscale + muted red/gold), saved as Lovable assets.
-- **Members** (`/members`) — intro block + bordered grid of ~12 satirical member cards (initials avatar, name, city, why-they-joined, REQ id, join date), "Become #21564" CTA card.
-- **Voice / Issues** (`/voice`) — three-column layout (HOT / feed / TOP + NEW), category filter chips, sort tabs (Top/Hot/New), bordered issue cards with severity tag (1/10–10/10), upvote/downvote/share, location, author chip. Static seed of 12 fictional issues. Pagination stub.
-- **Raise Issue** (`/voice/raise`) — brutalist form: title, category, severity slider, location, description, anonymous toggle, submit (stores to localStorage, prepends to feed).
-- **Tracker** (`/cockroach-tracker`) — header stats (total members, on map, top state, latest join), India SVG heatmap (inline simplified SVG with state shading by seeded counts), live joins side panel, "Top cities" 4×3 bordered grid.
-- **Quotes** (`/quotes`) — 2-col bordered grid of ~7 satirical quote cards, intro line.
-- **Memes** (`/meme`) — masonry-ish bordered grid of meme cards (placeholder ASCII/typographic memes since we won't generate real ones), share/download buttons.
-- **News** (`/news`) — editorial list of press mentions (date · outlet · headline · excerpt · READ →) with original blurbs.
-- **Press** (`/press`) — press contact, downloadable assets block, boilerplate, founder bios placeholder, logos strip.
-- **Card** (`/card`) — membership card generator: name + city + REQ id input → renders printable brutalist member card preview with download-as-PNG (html2canvas).
-- **Privacy** (`/privacy`) — short + long version, original wording.
-- **Terms** (`/terms`) — original wording.
-- **Vision** (`/vision`) — pull existing Vision block into standalone page with extended manifesto-philosophy copy.
+## 3. Auth flow
+- `/auth` page: "Sign in with Google" button (`supabase.auth.signInWithOAuth({provider:'google', options:{redirectTo: window.location.origin + '/admin'}})`)
+- `AuthProvider` context: tracks session via `onAuthStateChange`, exposes `user`, `isAdmin` (queries `user_roles`), `signOut`
+- `<ProtectedRoute requireAdmin>` wrapper: redirects to `/auth` if no session, to `/` if not admin
 
-## 3. Shared components (new under `src/components/cjp/`)
-- `SiteLayout.tsx` — wraps TopMarquee + LiveMemberTicker + SiteHeader + `<Outlet/>` + SiteFooter.
-- `IssueCard.tsx`, `MemberCard.tsx`, `PosterCard.tsx`, `QuoteCard.tsx`, `NewsCard.tsx`, `MembershipCard.tsx`, `IndiaHeatmap.tsx`, `CategoryChips.tsx`.
+## 4. Admin pages (under `/admin/*`, all guarded)
+- `/admin` — dashboard with counts + nav cards
+- `/admin/articles` — list + create/edit/delete (slug, title, body as textarea split on blank lines, published toggle)
+- `/admin/events` — same shape for events
+- `/admin/quotes` — short-form CRUD
+- `/admin/news` — CRUD
+- `/admin/contacts` — read-only inbox of contact submissions
+Shared `AdminLayout` with sidebar.
 
-## 4. Data seeds (`src/data/`)
-- `issues.ts`, `members.ts`, `posters.ts`, `quotes.ts`, `news.ts`, `states.ts` — all fictional, satirical, original.
+## 5. Public Events page
+- `/protests` route — lists published events from DB. Seed migration inserts the **6 June Delhi event**:
+  - Title: "6 June · Delhi · The Cockroach March"
+  - Location: Jantar Mantar, New Delhi
+  - Time: 10:00 AM – 5:00 PM
+  - Theme: Political dissent — youth mobilization against NEET/CBSE exam irregularities
+  - Body: founder Abhijeet Dipke leads Gen-Z on-ground mobilization demanding accountability and resignation of the Union Education Minister; peaceful demonstrators in cockroach attire
+- `/protests/:slug` detail page with SEO meta
+- Add "PROTESTS" link to `SiteHeader` nav
 
-## 5. Assets
-- Generate 12 vintage poster images via imagegen (greyscale + accent), upload via lovable-assets, reference in `posters.ts`.
+## 6. Public pages read from DB
+`Articles`, `ArticleDetail`, `Quotes`, `News` switch from static arrays to Supabase queries (filter `published = true`). Static `src/data/articles.ts` becomes seed-only (migration seeds the existing 5 articles + 2 sample quotes/news).
 
-## 6. SEO / sitemap
-- Update `scripts/generate-sitemap.ts` with new routes; per-page `<SEO>` titles + descriptions; JSON-LD on article + organization.
+## 7. SEO & sitemap
+- Add `<meta name="google-site-verification" content="8wjHZ5KMwGy83SecjRZTwkmAnWev3BBk_iSfzuRh_LE" />` to `index.html`
+- Rewrite `scripts/generate-sitemap.ts` to **fetch published rows from Supabase** at predev/prebuild time using `VITE_SUPABASE_URL` + anon key, so new articles/events appear in `sitemap.xml` automatically without manual edits
+- Sitemap covers: all static routes + `/articles/:slug` for every published article + `/protests/:slug` for every published event. Excludes `/admin/*` and `/auth`
+- `BASE_URL = https://thecockroachjantaparty.lovable.app`
+- `robots.txt` adds `Disallow: /admin/` and `Disallow: /auth`
 
-## Technical notes
-- Stack stays React + Vite + Tailwind + react-router. No backend needed; "submit" actions persist to localStorage.
-- India heatmap: hand-rolled simplified SVG of states (not a real geo dataset) — fits brutalist aesthetic and avoids heavy map libs.
-- Membership card download: add `html-to-image` (lighter than html2canvas).
-- Strict tokens: `bg-paper`, `bg-ink`, `text-gold`, `font-display`, `font-condensed`, `font-italic-serif` — no raw hex in components.
+## 8. Files touched
+**Created**: `src/contexts/AuthContext.tsx`, `src/components/ProtectedRoute.tsx`, `src/components/admin/AdminLayout.tsx`, `src/pages/Auth.tsx`, `src/pages/Protests.tsx`, `src/pages/ProtestDetail.tsx`, `src/pages/admin/{Dashboard,AdminArticles,AdminEvents,AdminQuotes,AdminNews,AdminContacts}.tsx`, migration file.
+**Modified**: `index.html`, `src/App.tsx`, `src/main.tsx`, `src/components/cjp/SiteHeader.tsx`, `src/pages/{Articles,ArticleDetail,Quotes,News,Contact}.tsx`, `scripts/generate-sitemap.ts`, `public/robots.txt`, `package.json`.
 
-## Out of scope
-- Real auth / database / payments.
-- Verbatim copy from the reference site (using original satirical copy in the same register).
-- Real India geo map with district-level accuracy.
-
-Approve to proceed and I'll build it.
+## Notes
+- Google provider in Lovable Cloud is managed — no client ID needed from you.
+- Admin promotion: first Google sign-in claims admin. Future users default to `user` role; you can promote by editing `user_roles` in DB.
+- Contact form will switch to inserting into `contact_messages` so admins can review submissions.

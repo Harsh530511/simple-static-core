@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /auth
 
-Sitemap: https://car-hitch-home.lovable.app/sitemap.xml
+Sitemap: https://thecockroachjantaparty.lovable.app/sitemap.xml

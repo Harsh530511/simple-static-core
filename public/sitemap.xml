@@ -1,58 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://car-hitch-home.lovable.app/</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/manifesto</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/vision</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/manifesto</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/articles</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/articles</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/join</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/protests</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/gallery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/members</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/voice</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/voice/raise</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/cockroach-tracker</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/quotes</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/meme</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/news</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/press</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/card</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/join</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/contact</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/disclaimer</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/articles/tareekh-pe-tareekh-indian-judiciary</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/disclaimer</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/articles/tareekh-pe-tareekh-indian-judiciary</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/articles/the-quiet-rights-human-rights-india</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/articles/the-quiet-rights-human-rights-india</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/articles/reclaiming-the-cockroach-as-political-symbol</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/articles/reclaiming-the-cockroach-as-political-symbol</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/articles/the-five-demands-explained</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/articles/the-five-demands-explained</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://car-hitch-home.lovable.app/articles/the-great-emi-republic</loc>
+    <loc>https://thecockroachjantaparty.lovable.app/articles/the-great-emi-republic</loc>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://thecockroachjantaparty.lovable.app/protests/6-june-delhi-cockroach-march</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
