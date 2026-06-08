@@ -7,7 +7,7 @@ import { config as loadEnv } from "dotenv";
 
 loadEnv();
 
-const BASE_URL = "https://simple-static-core.lovable.app";
+const BASE_URL = "https://thecockroachjantaparty.lovable.app";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 

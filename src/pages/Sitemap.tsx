@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import SEO from "@/components/cjp/SEO";
 
-const SITE = "https://simple-static-core.lovable.app";
+const SITE = "https://thecockroachjantaparty.lovable.app";
 const SITEMAP_URL = `${SITE}/sitemap.xml`;
 const ROBOTS_URL = `${SITE}/robots.txt`;
 

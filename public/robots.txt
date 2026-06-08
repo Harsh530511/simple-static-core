@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /auth
 
-Sitemap: https://simple-static-core.lovable.app/sitemap.xml
+Sitemap: https://thecockroachjantaparty.lovable.app/sitemap.xml
