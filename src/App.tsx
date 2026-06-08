@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SiteHeader from "./components/cjp/SiteHeader";
 import SiteFooter from "./components/cjp/SiteFooter";
 import LiveMemberTicker from "./components/cjp/LiveMemberTicker";
+import CockroachCursor from "./components/cjp/CockroachCursor";
 import Home from "./pages/Home";
 import Manifesto from "./pages/Manifesto";
 import Articles from "./pages/Articles";
@@ -51,6 +52,7 @@ const Shell = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       {!isAdmin && !isAuth && <SiteHeader />}
       {!isAdmin && !isAuth && <LiveMemberTicker />}
+      {!isAdmin && !isAuth && <CockroachCursor />}
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
