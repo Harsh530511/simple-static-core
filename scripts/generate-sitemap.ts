@@ -13,29 +13,32 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 interface Entry { path: string; changefreq?: string; priority?: string; lastmod?: string }
 
+const TODAY = new Date().toISOString().slice(0, 10);
+
 const staticEntries: Entry[] = [
-  { path: "/", changefreq: "weekly", priority: "1.0" },
-  { path: "/vision", changefreq: "monthly", priority: "0.8" },
-  { path: "/manifesto", changefreq: "monthly", priority: "0.9" },
-  { path: "/articles", changefreq: "weekly", priority: "0.8" },
-  { path: "/protests", changefreq: "weekly", priority: "0.8" },
-  { path: "/gallery", changefreq: "monthly", priority: "0.7" },
-  { path: "/members", changefreq: "daily", priority: "0.7" },
-  { path: "/voice", changefreq: "daily", priority: "0.8" },
-  { path: "/voice/raise", changefreq: "monthly", priority: "0.6" },
-  { path: "/cockroach-tracker", changefreq: "daily", priority: "0.7" },
-  { path: "/quotes", changefreq: "weekly", priority: "0.6" },
-  { path: "/meme", changefreq: "weekly", priority: "0.5" },
-  { path: "/news", changefreq: "weekly", priority: "0.6" },
-  { path: "/press", changefreq: "monthly", priority: "0.5" },
-  { path: "/card", changefreq: "monthly", priority: "0.6" },
-  { path: "/join", changefreq: "monthly", priority: "0.9" },
-  { path: "/contact", changefreq: "yearly", priority: "0.5" },
-  { path: "/privacy", changefreq: "yearly", priority: "0.3" },
-  { path: "/terms", changefreq: "yearly", priority: "0.3" },
-  { path: "/disclaimer", changefreq: "yearly", priority: "0.3" },
-  { path: "/sitemap", changefreq: "monthly", priority: "0.4" },
+  { path: "/", changefreq: "weekly", priority: "1.0", lastmod: TODAY },
+  { path: "/vision", changefreq: "monthly", priority: "0.8", lastmod: TODAY },
+  { path: "/manifesto", changefreq: "monthly", priority: "0.9", lastmod: TODAY },
+  { path: "/articles", changefreq: "weekly", priority: "0.8", lastmod: TODAY },
+  { path: "/protests", changefreq: "weekly", priority: "0.8", lastmod: TODAY },
+  { path: "/gallery", changefreq: "monthly", priority: "0.7", lastmod: TODAY },
+  { path: "/members", changefreq: "daily", priority: "0.7", lastmod: TODAY },
+  { path: "/voice", changefreq: "daily", priority: "0.8", lastmod: TODAY },
+  { path: "/voice/raise", changefreq: "monthly", priority: "0.6", lastmod: TODAY },
+  { path: "/cockroach-tracker", changefreq: "daily", priority: "0.7", lastmod: TODAY },
+  { path: "/quotes", changefreq: "weekly", priority: "0.6", lastmod: TODAY },
+  { path: "/meme", changefreq: "weekly", priority: "0.5", lastmod: TODAY },
+  { path: "/news", changefreq: "weekly", priority: "0.6", lastmod: TODAY },
+  { path: "/press", changefreq: "monthly", priority: "0.5", lastmod: TODAY },
+  { path: "/card", changefreq: "monthly", priority: "0.6", lastmod: TODAY },
+  { path: "/join", changefreq: "monthly", priority: "0.9", lastmod: TODAY },
+  { path: "/contact", changefreq: "yearly", priority: "0.5", lastmod: TODAY },
+  { path: "/privacy", changefreq: "yearly", priority: "0.3", lastmod: TODAY },
+  { path: "/terms", changefreq: "yearly", priority: "0.3", lastmod: TODAY },
+  { path: "/disclaimer", changefreq: "yearly", priority: "0.3", lastmod: TODAY },
+  { path: "/sitemap", changefreq: "monthly", priority: "0.4", lastmod: TODAY },
 ];
+
 
 async function fetchSlugs(table: string): Promise<{ slug: string; updated_at?: string }[]> {
   if (!SUPABASE_URL || !SUPABASE_KEY) return [];
