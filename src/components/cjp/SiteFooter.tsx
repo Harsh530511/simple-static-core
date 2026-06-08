@@ -38,6 +38,7 @@ const COLS = [
       { to: "/terms", label: "Terms of Use" },
       { to: "/disclaimer", label: "Disclaimer" },
       { to: "/press", label: "Press Kit" },
+      { to: "/sitemap", label: "Sitemap" },
     ],
   },
 ];
